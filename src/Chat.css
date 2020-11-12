@@ -1,0 +1,71 @@
+.chat {
+  flex: 0.65;
+  display: flex;
+  flex-direction: column;
+}
+.chatbar-navbar {
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: rgb(235, 235, 235);
+  border: 1px solid rgb(230, 230, 230);
+}
+.chatbar-left {
+  display: flex;
+  flex: 0.9;
+  align-items: center;
+  overflow: hidden;
+  justify-content: flex-start;
+}
+.chatbar-right {
+  display: flex;
+  flex: 0.1;
+  align-items: center;
+  justify-content: space-around;
+}
+.chatbar-name {
+  font-weight: 625;
+  font-size: 20px;
+}
+.chatbar-title {
+  display: flex;
+  flex-direction: column;
+}
+.chatbar-status {
+  color: rgb(125, 125, 125);
+  font-size: 14px;
+}
+.chat-body {
+  flex: 1;
+  background-image: url("https://ghostcode.in/wp-content/uploads/2016/09/super_hero_whatsapp_background_by_x_ama-d8fr7iz.jpg");
+  background-repeat: repeat;
+  background-position: center;
+  padding: 30px;
+  overflow: auto;
+}
+.chat-message {
+  position: relative;
+  font-size: 16px;
+  padding: 10px;
+  width: fit-content;
+  border-radius: 10px;
+  background-color: white;
+  margin-bottom: 30px;
+  display: flex;
+}
+.chat-name {
+  position: absolute;
+  top: -20px;
+  font-weight: 800;
+  font-size: 14px;
+}
+.chat-timestamp {
+  position: relative;
+  display: flex;
+  font-size: 12px;
+  color: rgb(150, 150, 150);
+  top: 12px;
+  margin-left: 5px;
+}
