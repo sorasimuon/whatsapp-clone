@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Chat.css";
 import { makeStyles } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
@@ -12,6 +12,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import Typingbar from "./Typingbar";
 import Message from "./Message";
+import { v4 as uuidv4 } from "uuid";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -23,8 +24,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Chat() {
+function Chat({ messages }) {
   const classes = useStyles();
+  const [username, setuserName] = useState("Sorasi");
   return (
     <div className="chat">
       {/* Chat Bar */}
@@ -53,17 +55,15 @@ function Chat() {
 
       {/* Conversation area */}
       <div className="chat-body">
-        <Message
-          messageName="Sorasi"
-          messageContent="This is a message"
-          messageTimestamp="00:01"
-          messageReceiver
-        />
-        <Message
-          messageName="Sorasi"
-          messageContent="This is a message"
-          messageTimestamp="00:01"
-        />
+        {messages.map((message) => (
+          <Message
+            key={uuidv4()}
+            messageName={message.name}
+            messageContent={message.message}
+            messageTimestamp={new Date(message.timestamp).toLocaleTimeString()}
+            messageReceiver={username === message.name ? true : false}
+          />
+        ))}
       </div>
       <Typingbar />
     </div>

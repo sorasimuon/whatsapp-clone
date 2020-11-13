@@ -10,6 +10,7 @@ import SendOutlinedIcon from "@material-ui/icons/SendOutlined";
 import InputBase from "@material-ui/core/InputBase";
 import { grey } from "@material-ui/core/colors";
 import MicNoneIcon from "@material-ui/icons/MicNone";
+import axios from "./axios";
 
 const useStyles = makeStyles((theme) => ({
   iconButton: {
@@ -27,8 +28,32 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Typingbar() {
+  const username = "Sorasi";
   const [textMessage, settextMessage] = useState("");
   const classes = useStyles();
+
+  const sendMessage = async (e) => {
+    e.preventDefault();
+
+    // Create Message object
+    const newMessage = {
+      message: textMessage,
+      name: username,
+    };
+
+    const req = await axios
+      .post("/api/v1/messages/new-message", newMessage)
+      .then((res) => {
+        console.log(
+          `Sent new message from ${res.data.name} at ${new Date(
+            res.data.timestamp
+          ).toLocaleTimeString()} >> ${res.data.message}`
+        );
+        // console.log(res);
+        // Reset the Input to <empty>
+        settextMessage("");
+      });
+  };
   return (
     <div className="typingbar">
       <IconButton>
@@ -39,12 +64,13 @@ function Typingbar() {
       </IconButton>
 
       <div className="typing-search">
-        <form>
+        <form onSubmit={(e) => sendMessage(e)}>
           <InputBase
             placeholder="Type text"
             className={classes.inputInput}
             inputProps={{ "aria-label": "search" }}
             onChange={(e) => settextMessage(e.target.value)}
+            value={textMessage}
           />
         </form>
       </div>
