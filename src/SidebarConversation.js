@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useStateValue } from "./context/stateProvider";
+import axios from "./axios";
+
 import "./SidebarConversation.css";
 import Avatar from "@material-ui/core/Avatar";
 import GroupIcon from "@material-ui/icons/Group";
@@ -28,9 +31,49 @@ const translateDate = (date) => {
   return result;
 };
 
-function SidebarConversation() {
+function SidebarConversation({ conversation }) {
   const classes = useStyles();
   const date = translateDate(Date.now());
+  const [{ messages, user, currentConversation }, dispatch] = useStateValue();
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [email, setEmail] = useState("");
+
+  // find the information of the interlocutor
+  const getChatterInfo = async () => {
+    if (!conversation) {
+      console.log("marche pas");
+    } else {
+      let chatterEmail = null;
+      for (let email of conversation.chatters) {
+        if (email !== user.email) {
+          chatterEmail = email;
+        }
+      }
+      // console.log("chatterEmail >>> " + chatterEmail);
+      // get chatterEmail' information
+      await axios
+        .get("/users/user", { params: { email: chatterEmail } })
+        .then((response) => {
+          // console.log("Works !!!");
+          // console.log(response.data);
+          setFirstname(response.data.firstname);
+          setLastname(response.data.lastname);
+          setEmail(response.data.email);
+        })
+        .catch((err) => {
+          console.log("did not find data regarding the interlocutor in DB");
+          console.log(err.response.data);
+        });
+    }
+  };
+
+  useEffect(() => {
+    // console.log("currentConversation");
+    // console.log(currentConversation);
+    const chatterInfo = getChatterInfo();
+  }, [currentConversation]);
+
   return (
     <div className="sidebarConversation">
       <div className="sidebarConversation-avatar">
@@ -40,11 +83,13 @@ function SidebarConversation() {
       </div>
       <div className="sidebarConversation-content">
         <div className="sidebarConversation-title">
-          <label className="sidebarConversation-name">Sorasi</label>
+          <label className="sidebarConversation-name">
+            {firstname} {lastname}
+          </label>
           <label className="sidebarConversation-date">{date}</label>
         </div>
         <div className="sidebarConversation-conversation">
-          <label className="sidebarConversation-conv">Sorasi</label>
+          <label className="sidebarConversation-conv">Hello</label>
         </div>
         <Divider light variant="fullWidth" />
       </div>

@@ -1,0 +1,11 @@
+.newContact {
+  height: 75px;
+  display: flex;
+  flex-direction: flex-start;
+  align-items: center;
+  padding-left: 12px;
+}
+.newContact:hover {
+  background-color: rgb(240, 240, 240);
+  cursor: pointer;
+}

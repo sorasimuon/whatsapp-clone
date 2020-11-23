@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useStateValue } from "./context/stateProvider";
 import "./Typingbar.css";
 
 // Material-UI
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Typingbar() {
-  const username = "Sorasi";
+  const [{ user }, dispatch] = useStateValue();
   const [textMessage, settextMessage] = useState("");
   const classes = useStyles();
 
@@ -38,14 +39,15 @@ function Typingbar() {
     // Create Message object
     const newMessage = {
       message: textMessage,
-      name: username,
+      firstname: user.firstname,
+      email: user.email,
     };
 
     const req = await axios
       .post("/api/v1/messages/new-message", newMessage)
       .then((res) => {
         console.log(
-          `Sent new message from ${res.data.name} at ${new Date(
+          `Sent new message from ${res.data.firstname} at ${new Date(
             res.data.timestamp
           ).toLocaleTimeString()} >> ${res.data.message}`
         );

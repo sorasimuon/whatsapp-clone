@@ -1,13 +1,13 @@
 import React, { useState } from "react";
+import { useStateValue } from "./context/stateProvider";
+import axios from "./axios";
+import isEmpty from "is-empty";
+
 import "./Chat.css";
 import { makeStyles } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
-import DonutLargeIcon from "@material-ui/icons/DonutLarge";
-import AddIcon from "@material-ui/icons/Add";
-import MoreVert from "@material-ui/icons/MoreVert";
 import Avatar from "@material-ui/core/Avatar";
 import { deepOrange } from "@material-ui/core/colors";
-import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import Typingbar from "./Typingbar";
@@ -26,7 +26,40 @@ const useStyles = makeStyles((theme) => ({
 
 function Chat({ messages }) {
   const classes = useStyles();
-  const [username, setuserName] = useState("Sorasi");
+  const [{ user, currentConversation }, dispatch] = useStateValue();
+
+  // find the information of the interlocutor
+  const getChatterInfo = async () => {
+    if (isEmpty(currentConversation)) {
+      console.log("marche pas");
+      console.log(user);
+      return {
+        firstname: "",
+        lastname: "",
+        email: "",
+      };
+    } else {
+      let chatterEmail = null;
+      for (let email of currentConversation.chatters) {
+        if (email !== user.email) {
+          chatterEmail = email;
+        }
+      }
+      // get chatterEmail' information
+      await axios
+        .get("/users/user", { params: { email: chatterEmail } })
+        .then((response) => {
+          return response.data;
+        })
+        .catch((err) => {
+          console.log("did not find data regarding the interlocutor in DB");
+          console.log(err.response.data);
+        });
+    }
+  };
+
+  const chatterInfo = getChatterInfo();
+
   return (
     <div className="chat">
       {/* Chat Bar */}
@@ -39,7 +72,9 @@ function Chat({ messages }) {
             S
           </Avatar>
           <div className="chatbar-title">
-            <label className="chatbar-name">Sorasi</label>
+            <label className="chatbar-name">
+              {chatterInfo.firstname} {chatterInfo.lastname}
+            </label>
             <label className="chatbar-status">Online</label>
           </div>
         </div>
@@ -55,15 +90,30 @@ function Chat({ messages }) {
 
       {/* Conversation area */}
       <div className="chat-body">
-        {messages.map((message) => (
-          <Message
-            key={uuidv4()}
-            messageName={message.name}
-            messageContent={message.message}
-            messageTimestamp={new Date(message.timestamp).toLocaleTimeString()}
-            messageReceiver={username === message.name ? true : false}
-          />
-        ))}
+        {messages.map((message) => {
+          // const currentDate = new Date(message.timestamp);
+
+          // // determine the date to display in bubble representing the date
+          // displayDate(currentDate);
+
+          // Recall the previous date message in order to
+          return (
+            <div key={uuidv4()}>
+              {/* <div className="date">
+                <span>{messageToDisplay}</span>
+              </div> */}
+              <Message
+                key={uuidv4()}
+                messageName={message.firstname}
+                messageContent={message.message}
+                messageTimestamp={new Date(
+                  message.timestamp
+                ).toLocaleTimeString()}
+                messageReceiver={user.email === message.email ? true : false}
+              />
+            </div>
+          );
+        })}
       </div>
       <Typingbar />
     </div>

@@ -4,37 +4,10 @@
   flex-direction: column;
 }
 
-.sidebar-navbar {
-  height: 50px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: rgb(235, 235, 235);
+.sidebar-hidden {
+  visibility: hidden;
 }
 
-.sidebar-searchbar {
-  height: 60px;
-  background-color: rgb(240, 240, 240);
-  display: flex;
-  align-items: center;
-  padding: 5px 15px 5px 15px;
-}
-.sidebar-search {
-  border-radius: 20px;
-  display: flex;
-  background-color: rgba(255, 255, 255, 0.5);
-  width: 100%;
-  padding: 5px;
-}
-.sidebar-searchIcon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5px;
-}
-.sidebar-listContainer {
-  overflow: auto;
-  height: 100%;
-  border: 1px solid rgb(230, 230, 230);
+.sidebar-visible {
+  visibility: visible;
 }
