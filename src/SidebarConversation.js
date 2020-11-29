@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useStateValue } from "./context/stateProvider";
 import axios from "./axios";
+import isEmpty from "is-empty";
 
 import "./SidebarConversation.css";
 import Avatar from "@material-ui/core/Avatar";
 import GroupIcon from "@material-ui/icons/Group";
-import { makeStyles, rgbToHex } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
+import { deepOrange } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
     height: "60px",
     width: "60px",
+    backgroundColor: deepOrange[300],
   },
 }));
 
@@ -34,51 +37,77 @@ const translateDate = (date) => {
 function SidebarConversation({ conversation }) {
   const classes = useStyles();
   const date = translateDate(Date.now());
-  const [{ messages, user, currentConversation }, dispatch] = useStateValue();
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [email, setEmail] = useState("");
+  const [
+    { messages, user, currentConversation, conversations, contacts },
+    dispatch,
+  ] = useStateValue();
 
-  // find the information of the interlocutor
-  const getChatterInfo = async () => {
-    if (!conversation) {
-      console.log("marche pas");
-    } else {
-      let chatterEmail = null;
-      for (let email of conversation.chatters) {
-        if (email !== user.email) {
-          chatterEmail = email;
-        }
+  const [mounted, setMounted] = useState(true);
+  const [selected, setSelected] = useState(false);
+  const [lastMessage, setLastMessage] = useState(
+    conversation.messages[conversation.messages.length - 1]?.message
+  );
+
+  const getInterlocutorInfo = () => {
+    let email = "";
+    // get the interlocurotr address from conversation
+    for (let chatterEmail of conversation.chatters) {
+      if (chatterEmail !== user.email) {
+        email = chatterEmail;
       }
-      // console.log("chatterEmail >>> " + chatterEmail);
-      // get chatterEmail' information
-      await axios
-        .get("/users/user", { params: { email: chatterEmail } })
-        .then((response) => {
-          // console.log("Works !!!");
-          // console.log(response.data);
-          setFirstname(response.data.firstname);
-          setLastname(response.data.lastname);
-          setEmail(response.data.email);
-        })
-        .catch((err) => {
-          console.log("did not find data regarding the interlocutor in DB");
-          console.log(err.response.data);
-        });
     }
+
+    // get interlocutor firstname and lastname from contacts
+    let interlocutor = {};
+    for (let contact of contacts) {
+      if (contact.email === email) {
+        interlocutor.firstname = contact.firstname;
+        interlocutor.lastname = contact.lastname;
+        interlocutor.email = contact.email;
+      }
+    }
+
+    return interlocutor;
+  };
+  const [firstname, setFirstname] = useState(getInterlocutorInfo().firstname);
+  const [lastname, setLastname] = useState(getInterlocutorInfo().lastname);
+  const [email, setEmail] = useState(getInterlocutorInfo().email);
+
+  useEffect(() => {
+    if (!isEmpty(conversation.messages)) {
+      setLastMessage(
+        conversation.messages[conversation.messages.length - 1].message
+      );
+    } else {
+      setLastMessage("Hey ! I am using What's App Clone");
+    }
+  }, [conversation]);
+
+  // Define the new currentConversation
+  const changeCurrentConversation = (e) => {
+    e.preventDefault();
+    dispatch({
+      type: "SET_CURRENT_CONVERSATION",
+      currentConv: conversation,
+    });
   };
 
   useEffect(() => {
-    // console.log("currentConversation");
-    // console.log(currentConversation);
-    const chatterInfo = getChatterInfo();
+    if (String(conversation.__id) === String(currentConversation.__id)) {
+      setSelected(true);
+    } else {
+      setSelected(false);
+    }
   }, [currentConversation]);
 
   return (
-    <div className="sidebarConversation">
+    <div
+      className={`sidebarConversation`}
+      onClick={(e) => changeCurrentConversation(e)}
+    >
       <div className="sidebarConversation-avatar">
         <Avatar className={classes.avatar} width="40px" height="40px">
-          <GroupIcon />
+          {firstname?.charAt(0)}
         </Avatar>
       </div>
       <div className="sidebarConversation-content">
@@ -89,7 +118,7 @@ function SidebarConversation({ conversation }) {
           <label className="sidebarConversation-date">{date}</label>
         </div>
         <div className="sidebarConversation-conversation">
-          <label className="sidebarConversation-conv">Hello</label>
+          <label className="sidebarConversation-conv">{lastMessage}</label>
         </div>
         <Divider light variant="fullWidth" />
       </div>

@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Typingbar() {
-  const [{ user }, dispatch] = useStateValue();
+  const [{ user, currentConversation }, dispatch] = useStateValue();
   const [textMessage, settextMessage] = useState("");
   const classes = useStyles();
 
@@ -43,17 +43,20 @@ function Typingbar() {
       email: user.email,
     };
 
+    // erase the typing bar
+    settextMessage("");
+
     const req = await axios
-      .post("/api/v1/messages/new-message", newMessage)
+      .post("/messages/new-message", {
+        newMessage: newMessage,
+        currentConversation: currentConversation,
+      })
       .then((res) => {
         console.log(
           `Sent new message from ${res.data.firstname} at ${new Date(
             res.data.timestamp
           ).toLocaleTimeString()} >> ${res.data.message}`
         );
-        // console.log(res);
-        // Reset the Input to <empty>
-        settextMessage("");
       });
   };
   return (

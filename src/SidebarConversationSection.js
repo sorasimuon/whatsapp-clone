@@ -18,9 +18,8 @@ import SearchIcon from "@material-ui/icons/Search";
 import SidebarConversation from "./SidebarConversation";
 
 const useStyles = makeStyles((theme) => ({
-  orange: {
-    color: theme.palette.getContrastText(deepOrange[500]),
-    backgroundColor: deepOrange[500],
+  avatar: {
+    backgroundColor: deepOrange[300],
   },
   inputInput: {
     backgroundColor: "rgba(255,255,255,0.5)",
@@ -43,15 +42,14 @@ function SidebarConversationSection() {
   const classes = useStyles();
   const [{ user, contacts, conversations }, dispatch] = useStateValue();
 
+  useEffect(() => {}, [conversations]);
+
   return (
     <div className={styles.sidebar__mainContent}>
       <div className={styles.sidebar__navbar}>
         <div className={styles.sidebar__left}>
-          <Avatar
-            className={`${classes.orange} ${classes.margin}`}
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSkcSGx-KlYubrDTQtCaFWZ3pBI3CJOxWwUHw&usqp=CAU"
-          >
-            S
+          <Avatar className={`${classes.avatar} ${classes.margin}`}>
+            {user?.firstname.slice(0, 1)}
           </Avatar>
           <p className={`${styles.sidebar__username} ${classes.margin}`}>
             {user?.firstname}

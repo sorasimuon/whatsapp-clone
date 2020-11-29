@@ -38,17 +38,11 @@ function NewContact({ contact }) {
         );
         dispatch({
           type: "SET_CURRENT_CONVERSATION",
-          currentConversation: {
-            chatters: res.data.chatters,
-            activated: res.data.activated,
-          },
+          currentConv: res.data,
         });
         dispatch({
           type: "ADD_CONVERSATION",
-          conversation: {
-            chatters: res.data.chatters,
-            activated: res.data.activated,
-          },
+          conversation: res.data,
         });
         dispatch({
           type: "SET_SIDEBAR_SECTION",

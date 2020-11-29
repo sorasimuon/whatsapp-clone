@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import axios from "./axios";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useStateValue } from "./context/stateProvider";
 import "./Register.css";
 
 import { makeStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import Button from "@material-ui/core/Button";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
@@ -15,6 +16,13 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     width: 40,
     height: 40,
+  },
+  logo2: {
+    width: 18,
+    height: 18,
+  },
+  logoPositionLeft: {
+    alignSelf: "start",
   },
   textField: {
     width: "80%",
@@ -83,9 +91,17 @@ function Register() {
   return (
     <form>
       <div className="register">
-        <IconButton>
-          <AlternateEmailIcon className={classes.logo} />
-        </IconButton>
+        <Link to="/whatsapp-clone/login" className={classes.logoPositionLeft}>
+          <IconButton>
+            <ArrowBackIcon className={classes.logo2} />
+          </IconButton>
+        </Link>
+
+        <Link to="/whatsapp-clone/login">
+          <IconButton>
+            <AlternateEmailIcon className={classes.logo} />
+          </IconButton>
+        </Link>
 
         <p> New Account </p>
 

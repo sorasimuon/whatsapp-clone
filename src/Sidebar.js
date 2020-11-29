@@ -6,14 +6,21 @@ import SidebarNewConversationSection from "./SidebarNewConversationSection";
 import "./Sidebar.css";
 
 function Sidebar() {
-  const [{ user, conversations, sideSection }, dispatch] = useStateValue();
+  const [
+    { user, conversations, sideSection, currentConversation },
+    dispatch,
+  ] = useStateValue();
+  const [sectionName, setSectionName] = useState(sideSection);
 
-  // console.log("sideSection >>>", sideSection);
+  useEffect(() => {
+    console.log("sideSection >>>", sideSection);
+    setSectionName(sideSection);
+  }, [sideSection]);
 
   return (
     <div className="sidebar">
-      {sideSection === "conversations" ? <SidebarConversationSection /> : ""}
-      {sideSection === "new-conversation" ? (
+      {sectionName === "conversations" ? <SidebarConversationSection /> : ""}
+      {sectionName === "new-conversation" ? (
         <SidebarNewConversationSection />
       ) : (
         ""

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
 import "./Login.css";
 import { useStateValue } from "./context/stateProvider";
 import axios from "./axios";
+import { useHistory } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Login() {
-  const [{}, dispatch] = useStateValue();
+  const [{ user }, dispatch] = useStateValue();
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -67,7 +67,6 @@ function Login() {
       const request = await axios
         .post("/users/login", credentials)
         .then((res) => {
-          console.log(res.data);
           console.log("Login successful >> ", res.data.data.email);
           // save the user in the data layer/store
           setUser(
@@ -75,10 +74,10 @@ function Login() {
             res.data.data.lastname,
             res.data.data.email
           );
-          // history.push("/whatsapp-clone/conversations");
+          history.push("/whatsapp-clone/loading");
         })
         .catch((error) => {
-          console.log(error.response.data);
+          console.log(error.response);
           setErrorMessages([error.response.data]);
           // reset Password and email
           setPassword("");
@@ -94,7 +93,7 @@ function Login() {
     <form>
       <div className="login">
         <IconButton>
-          <AlternateEmailIcon className={`${classes.logo} ${classes.margin}`} />
+          <AlternateEmailIcon className={classes.logo} />
         </IconButton>
 
         <p> Sign In </p>
