@@ -6,6 +6,8 @@ It is a very simple chat platform designed as the well known What's App desktop 
   - Register and login with his own credentials
   - Chat with the other registered users
   
+The Frontend calls an API called 'whatsapp-backend' to retrieve user information and conversations history
+  
 Javscript - Reactjs 
 HTML5 - CSS3 - Material-UI
 
