@@ -29,7 +29,7 @@ function NewContactList() {
 
   return (
     <div className={styles.newContactList}>
-      <div
+      {/* <div
         className={styles.newContactList__item}
         onClick={(e) =>
           dispatch({ type: "SET_SIDEBAR_SECTION", sideSection: "new_group" })
@@ -39,14 +39,14 @@ function NewContactList() {
 
         <label className={styles.newContactList__title}>NEW GROUP</label>
       </div>
-      <Divider light variant="fullWidth" />
+      <Divider light variant="fullWidth" /> */}
       <div className={styles.newContactList__listContacts}>
-        <div className={`${styles.title}`}>
+        {/* <div className={`${styles.title}`}>
           <label className={styles.newContactList__title2}>
             FREQUENTLY CONTACTED
           </label>
         </div>
-        <Divider light variant="fullWidth" />
+        <Divider light variant="fullWidth" /> */}
         {contacts.map((contact) => (
           <NewContact key={uuidv4()} contact={contact} />
         ))}

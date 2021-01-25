@@ -1,7 +1,8 @@
 .sidebar {
-  flex: 0.35;
+  height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: white;
 }
 
 .sidebar-hidden {
@@ -10,4 +11,15 @@
 
 .sidebar-visible {
   visibility: visible;
+}
+
+@media only screen and (max-width: 767.98px) {
+  .sidebar {
+    flex: 1;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .sidebar {
+    flex: 0.35;
+  }
 }

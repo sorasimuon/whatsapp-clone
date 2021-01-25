@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import axios from "./axios";
 import { useStateValue } from "./context/stateProvider";
 
@@ -10,16 +10,27 @@ import { deepOrange } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
-    height: 40,
-    width: 40,
-    marginRight: 10,
     backgroundColor: deepOrange[600],
+    [theme.breakpoints.down(768)]: {
+      width: 48,
+      height: 48,
+      marginRight: 10,
+    },
+    [theme.breakpoints.up(768)]: {
+      width: 60,
+      height: 60,
+      fontSize: 32,
+      marginRight: 20,
+    },
   },
 }));
 
 function NewContact({ contact }) {
   const classes = useStyles();
-  const [{ user, currentConversation }, dispatch] = useStateValue();
+  const [
+    { user, currentConversation, conversations },
+    dispatch,
+  ] = useStateValue();
 
   const createNewChat = async () => {
     // e.preventDefault();
@@ -27,23 +38,40 @@ function NewContact({ contact }) {
     await axios
       .post("conversations/new-chat", { chatters: [user.email, contact.email] })
       .then((res) => {
-        console.log(res);
-        console.log(
-          "Created new chat between" +
-            res.data.chatters[0] +
-            " and" +
-            res.data.chatters[1] +
-            " : activated => " +
-            res.data.activated
-        );
+        // console.log(res);
+        // console.log(
+        //   "Created new chat between" +
+        //     res.data.chatters[0] +
+        //     " and" +
+        //     res.data.chatters[1] +
+        //     " : activated => " +
+        //     res.data.activated
+        // );
+        // console.log(res.data._id);
+        // console.log(typeof res.data._id);
+
+        // if the conversation already exists, do not add to the list of conversations in store
+        let exists = false;
+        for (let conversation of conversations) {
+          if (conversation._id === res.data._id) {
+            exists = true;
+          }
+        }
+        if (!exists) {
+          // console.log("going");
+          dispatch({
+            type: "ADD_CONVERSATION",
+            conversation: res.data,
+          });
+        }
+
+        // Set the new conversation as the current conversatio nto display
         dispatch({
           type: "SET_CURRENT_CONVERSATION",
           currentConv: res.data,
         });
-        dispatch({
-          type: "ADD_CONVERSATION",
-          conversation: res.data,
-        });
+
+        //Go back to Conversation Section
         dispatch({
           type: "SET_SIDEBAR_SECTION",
           sideSection: "conversations",
@@ -52,20 +80,20 @@ function NewContact({ contact }) {
   };
 
   return (
-    <div>
+    <Fragment>
       <div className={styles.newContact} onClick={(e) => createNewChat()}>
         <Avatar
           className={classes.avatar}
           //   src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSkcSGx-KlYubrDTQtCaFWZ3pBI3CJOxWwUHw&usqp=CAU"
         >
-          {contact.firstname[0]}
+          {contact.firstname[0].toUpperCase()}
         </Avatar>
-        <label>
+        <p className={styles.newContact__name}>
           {contact.firstname} {contact.lastname}
-        </label>
+        </p>
       </div>
       <Divider light variant="fullWidth" />
-    </div>
+    </Fragment>
   );
 }
 

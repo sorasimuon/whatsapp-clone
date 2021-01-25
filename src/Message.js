@@ -8,10 +8,10 @@ function Message({
   messageReceiver = false,
 }) {
   return (
-    <div className={`message ${messageReceiver ? "message-receiver" : ""}`}>
+    <div className={messageReceiver ? "message-receiver" : "message"}>
       {/* <span className="message-name">{messageName}</span> */}
-      <span className="message-content">{messageContent}</span>
-      <span className="message-timestamp">{messageTimestamp}</span>
+      <p className="message-content">{messageContent}</p>
+      <p className="message-timestamp">{messageTimestamp}</p>
     </div>
   );
 }

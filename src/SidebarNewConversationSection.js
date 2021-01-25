@@ -40,7 +40,7 @@ function SidebarNewConversationSection() {
         <p className={styles.sidebar__title}>New Chat</p>
       </div>
       {/* Search Bar */}
-      <div className={styles.sidebar__searchbar}>
+      {/* <div className={styles.sidebar__searchbar}>
         <div className={styles.sidebar__search}>
           <div className={styles.sidebar__searchIcon}>
             <SearchIcon className={classes.searchIcon} />
@@ -51,7 +51,7 @@ function SidebarNewConversationSection() {
             inputProps={{ "aria-label": "search" }}
           />
         </div>
-      </div>
+      </div> */}
       <div className={styles.sidebar__listContainer}>
         <NewContactList />
       </div>

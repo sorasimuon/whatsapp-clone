@@ -1,11 +1,11 @@
 .typingbar {
-  height: 50px;
-  display: flex;
+  min-height: 36px;
+  display: grid;
+  grid-template-columns: 1fr [col1] auto[row2];
   justify-content: flex-start;
   align-items: center;
-  padding: 10px;
   background-color: rgb(235, 235, 235);
-  border: 1px solid rgb(230, 230, 230);
+  /* border: 1px solid rgb(230, 230, 230); */
 }
 
 .typing-search {
@@ -14,6 +14,22 @@
   background-color: white;
   padding-left: 10px;
   padding-right: 10px;
-  margin-left: 10px;
-  margin-right: 10px;
+}
+.form {
+  height: auto;
+}
+
+@media only screen and (max-width: 767.98px) {
+  .typingbar {
+    padding: 8px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .typingbar {
+    padding: 16px;
+  }
+  .form {
+    height: a;
+  }
 }

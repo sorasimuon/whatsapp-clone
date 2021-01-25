@@ -1,9 +1,12 @@
+import isEmpty from "is-empty";
+
 export const initialState = {
   user: null,
   conversations: [],
   sideSection: "conversations",
   contacts: [],
   currentConversation: {},
+  displaySideBar: false,
 };
 
 const reducer = (state, action) => {
@@ -45,15 +48,19 @@ const reducer = (state, action) => {
           String(action.data.conversationId) ===
           String(state.conversations[i]._id)
         ) {
-          console.log("id 1 = " + String(action.data.conversationId));
-          console.log("id 2 = " + String(state.conversations[i]._id));
           state.conversations[i].messages.push(action.data.message);
-          console.log(state.conversations[i]);
           return {
             ...state,
           };
         }
       }
+      break;
+    case "DISPLAY_SIDEBAR":
+      return {
+        ...state,
+        displaySideBar: !state.displaySideBar,
+      };
+      break;
     default:
       break;
   }

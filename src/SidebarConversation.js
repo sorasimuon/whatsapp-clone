@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { useStateValue } from "./context/stateProvider";
 import axios from "./axios";
 import isEmpty from "is-empty";
+import moment from "moment";
 
-import "./SidebarConversation.css";
+import styles from "./SidebarConversation.module.css";
 import Avatar from "@material-ui/core/Avatar";
 import GroupIcon from "@material-ui/icons/Group";
 import { makeStyles } from "@material-ui/core";
@@ -12,9 +13,19 @@ import { deepOrange } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
-    height: "60px",
-    width: "60px",
+    gridRow: "1/3",
+    gridColumn: "1/1",
+    justifySelf: "center",
+    alignSelf: "center",
     backgroundColor: deepOrange[300],
+    [theme.breakpoints.down(768)]: {
+      width: 48,
+      height: 48,
+    },
+    [theme.breakpoints.up(768)]: {
+      width: 60,
+      height: 60,
+    },
   },
 }));
 
@@ -47,6 +58,11 @@ function SidebarConversation({ conversation }) {
   const [lastMessage, setLastMessage] = useState(
     conversation.messages[conversation.messages.length - 1]?.message
   );
+  const [lastMessageDate, setLastMessageDate] = useState(
+    moment(
+      conversation.messages[conversation.messages.length - 1]?.timestamp
+    ).format("L")
+  );
 
   const getInterlocutorInfo = () => {
     let email = "";
@@ -73,10 +89,23 @@ function SidebarConversation({ conversation }) {
   const [lastname, setLastname] = useState(getInterlocutorInfo().lastname);
   const [email, setEmail] = useState(getInterlocutorInfo().email);
 
+  // Get the last message date to display
+  const handleLastMessageDate = (date) => {
+    if (moment(date).format("L") === moment().format("L")) {
+      setLastMessageDate(moment(date).format("LT"));
+    } else {
+      setLastMessageDate(moment(date).format("L"));
+    }
+  };
+
+  // define the last message and the last message date to display
   useEffect(() => {
     if (!isEmpty(conversation.messages)) {
       setLastMessage(
         conversation.messages[conversation.messages.length - 1].message
+      );
+      handleLastMessageDate(
+        conversation.messages[conversation.messages.length - 1].timestamp
       );
     } else {
       setLastMessage("Hey ! I am using What's App Clone");
@@ -90,39 +119,39 @@ function SidebarConversation({ conversation }) {
       type: "SET_CURRENT_CONVERSATION",
       currentConv: conversation,
     });
+    dispatch({
+      type: "DISPLAY_SIDEBAR",
+    });
   };
 
   useEffect(() => {
-    if (String(conversation.__id) === String(currentConversation.__id)) {
+    if (conversation._id === currentConversation._id) {
       setSelected(true);
     } else {
+      // console.log("conv " + conversation._id + ": unselected");
       setSelected(false);
     }
   }, [currentConversation]);
 
   return (
-    <div
-      className={`sidebarConversation`}
-      onClick={(e) => changeCurrentConversation(e)}
-    >
-      <div className="sidebarConversation-avatar">
-        <Avatar className={classes.avatar} width="40px" height="40px">
-          {firstname?.charAt(0)}
+    <Fragment>
+      <div
+        className={`${styles.sidebarConversation} ${
+          selected ? styles.sidebarConversation__isCurrent : ""
+        }`}
+        onClick={(e) => changeCurrentConversation(e)}
+      >
+        <Avatar className={classes.avatar}>
+          {firstname?.charAt(0).toUpperCase()}
         </Avatar>
-      </div>
-      <div className="sidebarConversation-content">
-        <div className="sidebarConversation-title">
-          <label className="sidebarConversation-name">
-            {firstname} {lastname}
-          </label>
-          <label className="sidebarConversation-date">{date}</label>
+        <div className={styles.sidebarConversation__name}>
+          {firstname} {lastname}
         </div>
-        <div className="sidebarConversation-conversation">
-          <label className="sidebarConversation-conv">{lastMessage}</label>
-        </div>
-        <Divider light variant="fullWidth" />
+        <p className={styles.sidebarConversation__date}>{lastMessageDate}</p>
+        <p className={styles.sidebarConversation__lastMessage}>{lastMessage}</p>
       </div>
-    </div>
+      <Divider light variant="fullWidth" />
+    </Fragment>
   );
 }
 

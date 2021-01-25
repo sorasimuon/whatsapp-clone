@@ -1,0 +1,32 @@
+.register {
+  display: grid;
+  background-color: white;
+  /* box-shadow: 0.2rem 0.2rem 1rem 0.2rem rgba(0, 0, 0, 0.2); */
+}
+.register > p {
+  font-size: 18px;
+  color: #009688;
+  margin: 0px;
+  justify-self: center;
+  text-transform: uppercase;
+}
+
+.login__errorMessage {
+  color: red !important;
+  font-size: 12px !important;
+}
+
+@media only screen and (max-width: 768px) {
+  .register {
+    width: 100%;
+    height: 100%;
+    grid-template-columns: 1em [col1] 1fr [row2] 1em [col3];
+    grid-template-rows: 1fr [row] repeat(8, auto [row]) 1fr [row];
+    align-items: center;
+    row-gap: 1em;
+    font-weight: 600;
+  }
+  .login__elementPosition {
+    grid-column: 2/3;
+  }
+}

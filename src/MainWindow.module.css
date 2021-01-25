@@ -1,10 +1,4 @@
-.app {
-  background-color: #009688;
-  height: 100vh;
-  display: grid;
-}
-/* 
-.app-body {
+.app__body {
   justify-self: center;
   align-self: center;
   box-shadow: 0.2rem 0.2rem 1rem 0.2rem rgba(0, 0, 0, 0.2);
@@ -12,13 +6,8 @@
 }
 
 @media only screen and (min-width: 768px) {
-  .app-body {
-    width: 90vw;
-    height: 90vh;
-  }
-
-  .app-body {
+  .app__body {
     width: 100vw;
     height: 100vh;
   }
-} */
+}
