@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import isEmpty from "is-empty";
 
 import Chat from "./Chat";
 import Sidebar from "./Sidebar";
@@ -11,7 +12,7 @@ import Drawer from "@material-ui/core/Drawer";
 /////////////////////////////
 
 function MainWindow() {
-  const [{ displaySideBar }, dispatch] = useStateValue();
+  const [{ displaySideBar, currentConversation }, dispatch] = useStateValue();
 
   // Keep track of window innerWidth
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -27,7 +28,11 @@ function MainWindow() {
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleResizeWidth);
   });
+  console.log(isEmpty(currentConversation));
 
+  if (isEmpty(currentConversation)) {
+    return <Sidebar />;
+  }
   return (
     <div className={styles.app__body}>
       {windowWidth < 768 ? (
@@ -37,7 +42,6 @@ function MainWindow() {
       ) : (
         <Sidebar />
       )}
-
       <Chat />
     </div>
   );

@@ -125,7 +125,7 @@ function SidebarConversation({ conversation }) {
   };
 
   useEffect(() => {
-    if (conversation._id === currentConversation._id) {
+    if (conversation._id === currentConversation?._id) {
       setSelected(true);
     } else {
       // console.log("conv " + conversation._id + ": unselected");

@@ -93,20 +93,36 @@ function Loading() {
       // 2. Synchronize with the list of conversation associated to the user
       const syncConversations = async () => {
         await axios.post("/conversations/sync", user).then((response) => {
+          // If the user has already some conversations
           if (response.data) {
-            dispatch({
-              type: "SET_CONVERSATIONS_LIST",
-              convs: response.data,
-            });
-            // 4. Define the first conversation in the list as the currentConversation (wait 1.5 sec)
-            if (isEmpty(currentConversation)) {
+            if (!isEmpty(response.data)) {
               dispatch({
-                type: "SET_CURRENT_CONVERSATION",
-                currentConv: response.data[0],
+                type: "SET_CONVERSATIONS_LIST",
+                convs: response.data,
               });
+              // 4. Define the first conversation in the list as the currentConversation (wait 1.5 sec)
+              if (isEmpty(currentConversation)) {
+                dispatch({
+                  type: "SET_CURRENT_CONVERSATION",
+                  currentConv: response.data[0],
+                });
+              }
+              console.log("Done: Sync ConversationsList");
+              console.log(response.data);
             }
-            console.log("Done: Sync ConversationsList");
-            console.log(response.data);
+            // Ise the user does not have any open conversations
+            // else {
+            //   const dummyConv = {
+            //     _id: "1",
+            //     chatters: ["user", "user"],
+            //     activated: false,
+            //     messages: [],
+            //   };
+            //   dispatch({
+            //     type: "SET_CURRENT_CONVERSATION",
+            //     currentConv: dummyConv,
+            //   });
+            // }
           }
         });
       };

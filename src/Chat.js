@@ -153,8 +153,9 @@ function Chat() {
   }, [currentConversation]);
 
   useEffect(() => {
-    console.log("Hello");
-    chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+    if (currentConversation) {
+      chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+    }
   }, [currentConversation.messages.length]);
 
   return (

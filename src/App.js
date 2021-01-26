@@ -16,7 +16,11 @@ import { useStateValue } from "./context/stateProvider";
 import { Route, Switch, Redirect } from "react-router-dom";
 
 function App() {
-  const [{ conversations, displaySideBar, user }, dispatch] = useStateValue();
+  const [
+    { conversations, displaySideBar, user, currentConversation },
+    dispatch,
+  ] = useStateValue();
+  console.log(currentConversation);
 
   // Use Effect that subscribe to Pusher to get notified
   //when a new message have been sent from a user
