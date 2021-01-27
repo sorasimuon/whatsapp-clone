@@ -174,7 +174,7 @@ function Chat() {
         </Avatar>
         <div className="chatbar-title">
           <label className="chatbar-name">
-            {firstname.toUpperCase()} {firstname?.charAt(0).toUpperCase()}.
+            {firstname.toUpperCase()} {lastname?.charAt(0).toUpperCase()}.
           </label>
           {/* <label className="chatbar-status">Online</label> */}
         </div>
