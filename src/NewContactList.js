@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useStateValue } from "./context/stateProvider";
 import { v4 as uuidv4 } from "uuid";
 
@@ -23,31 +23,38 @@ const useStyles = makeStyles((theme) => ({
 function NewContactList() {
   const classes = useStyles();
 
-  const [{ sideSection, contacts }, dispatch] = useStateValue();
-  // console.log("CONTACTS LIST >> ");
-  // console.log(contacts);
+  const [
+    { sideSection, contacts, conversations, user },
+    dispatch,
+  ] = useStateValue();
+
+  const getOnlyNoConversationsContactList = () => {
+    let contactList = [];
+    const result = [];
+    for (let conversation of conversations) {
+      contactList = contactList.concat(conversation.chatters);
+    }
+    console.log(contactList);
+
+    for (let contact of contacts) {
+      if (!contactList.includes(contact.email)) {
+        result.push(contact);
+      }
+    }
+    console.log(result);
+    setListContacts(result);
+  };
+
+  const [listContacts, setListContacts] = useState([]);
+
+  useEffect(() => {
+    getOnlyNoConversationsContactList();
+  }, []);
 
   return (
     <div className={styles.newContactList}>
-      {/* <div
-        className={styles.newContactList__item}
-        onClick={(e) =>
-          dispatch({ type: "SET_SIDEBAR_SECTION", sideSection: "new_group" })
-        }
-      >
-        <GroupAddIcon className={classes.newGroupButton} />
-
-        <label className={styles.newContactList__title}>NEW GROUP</label>
-      </div>
-      <Divider light variant="fullWidth" /> */}
       <div className={styles.newContactList__listContacts}>
-        {/* <div className={`${styles.title}`}>
-          <label className={styles.newContactList__title2}>
-            FREQUENTLY CONTACTED
-          </label>
-        </div>
-        <Divider light variant="fullWidth" /> */}
-        {contacts.map((contact) => (
+        {listContacts?.map((contact) => (
           <NewContact key={uuidv4()} contact={contact} />
         ))}
       </div>

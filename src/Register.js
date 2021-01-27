@@ -72,7 +72,6 @@ function Register() {
           if (response) {
             // Push to local storage
             console.log("New user registered >>> ");
-            console.log(response.data);
             dispatch({
               type: "SET_USER",
               user: {
@@ -82,7 +81,7 @@ function Register() {
                 userId: "random_value",
               },
             });
-            history.push("/whatsapp-clone/loading");
+            history.push("/loading");
           }
         })
         .catch((error) => {
@@ -107,7 +106,7 @@ function Register() {
   return (
     <div className={styles.login}>
       <form className={styles.login__form}>
-        <Link to="/whatsapp-clone/login" className={classes.logoPositionLeft}>
+        <Link to="/login" className={classes.logoPositionLeft}>
           <IconButton>
             <ArrowBackIcon className={classes.logo2} />
           </IconButton>

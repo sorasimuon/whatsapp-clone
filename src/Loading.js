@@ -56,7 +56,6 @@ function Loading() {
       interlocutor.firstname = response.data.firstname;
       interlocutor.lastname = response.data.lastname;
       interlocutor.email = response.data.email;
-      console.log("done");
     }, 250);
 
     return interlocutor;
@@ -65,12 +64,10 @@ function Loading() {
   useEffect(() => {
     // If a user is not logged in
     if (!user) {
-      if (location.pathname !== "/whatsapp-clone/new-account") {
-        history.replace("/whatsapp-clone/login");
+      if (location.pathname !== "/new-account") {
+        history.replace("/login");
       }
     } else {
-      console.log("User = ");
-      console.log(user);
       // 1. Synchronize with the list of contacts
       const syncContacts = async () => {
         await axios.get("/users/sync").then((response) => {
@@ -84,8 +81,6 @@ function Loading() {
             type: "SET_CONTACTS",
             contacts: contacts_list,
           });
-          console.log("Done: Sync Contacts List");
-          console.log(response.data);
         });
       };
       syncContacts();
@@ -107,8 +102,6 @@ function Loading() {
                   currentConv: response.data[0],
                 });
               }
-              console.log("Done: Sync ConversationsList");
-              console.log(response.data);
             }
             // Ise the user does not have any open conversations
             // else {
@@ -139,7 +132,6 @@ function Loading() {
 
     const messageChannel = pusher.subscribe("messages");
     messageChannel.bind("updated", (data) => {
-      console.log(data);
       dispatch({
         type: "ADD_NEW_MESSAGE",
         data: data,
@@ -157,7 +149,7 @@ function Loading() {
 
   useEffect(() => {
     setTimeout(() => {
-      history.replace("/whatsapp-clone/conversations");
+      history.replace("/conversations");
     }, 3000);
     return () => {};
   }, []);

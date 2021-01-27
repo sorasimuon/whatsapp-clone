@@ -84,14 +84,11 @@ function Chat() {
     let conversation = null;
     try {
       if (isEmpty(currentConversation) && !isEmpty(conversations)) {
-        // console.log("go 1");
         conversation = conversations[0];
       } else if (!isEmpty(currentConversation)) {
-        console.log(currentConversation);
         conversation = currentConversation;
       } else {
         return;
-        // history.replace("/whatsapp-clone/login");
       }
 
       for (let email of conversation.chatters) {
@@ -112,8 +109,8 @@ function Chat() {
 
       return interlocutor;
     } catch (error) {
-      console.log(error);
-      history.replace("/whatsapp-clone/login");
+      // console.log(error);
+      history.replace("/login");
     }
   };
 
@@ -125,10 +122,8 @@ function Chat() {
   // find the information of the interlocutor
   const getChatterInfo = () => {
     if (isEmpty(currentConversation)) {
-      // console.log("marche pas ");
     } else {
       const interlocutor = getCurrentInterlocutorInfo();
-      console.log(interlocutor);
       if (interlocutor) {
         setFirstname(interlocutor.firstname);
         setLastname(interlocutor.lastname);

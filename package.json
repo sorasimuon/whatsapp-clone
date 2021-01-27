@@ -20,7 +20,6 @@
     "validator": "^13.1.17",
     "web-vitals": "^0.2.4"
   },
-  "homepage": "http://sorasimuon.github.io/whatsapp-clone",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

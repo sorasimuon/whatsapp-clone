@@ -9,12 +9,14 @@ import { makeStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
+import Drawer from "@material-ui/core/Drawer";
+import HelpIcon from "@material-ui/icons/Help";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import ErrorIcon from "@material-ui/icons/Error";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import validateInput from "./utilities/validator";
 import { v4 as uuidv4 } from "uuid";
-import { teal } from "@material-ui/core/colors";
+import { teal, deepOrange } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   logo: {
@@ -46,6 +48,18 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "inherit",
     },
   },
+  login__testButton: {
+    backgroundColor: "inherit",
+    "&:hover": {
+      backgroundColor: "inherit",
+    },
+  },
+  login__testIcon: {
+    color: deepOrange[300],
+    "&:hover": {
+      color: deepOrange[100],
+    },
+  },
 }));
 
 const textFieldStyle = makeStyles((theme) => ({
@@ -63,6 +77,12 @@ function Login() {
   const [errorMessages, setErrorMessages] = useState({});
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
+
+  const handleOpenDrawer = (e, value) => {
+    e.preventDefault();
+    setOpenDrawer(value);
+  };
 
   // Keep track of window innerWidth
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -119,10 +139,10 @@ function Login() {
             res.data.data.lastname,
             res.data.data.email
           );
-          history.push("/whatsapp-clone/loading");
+          history.push("/loading");
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
           if (error.response) {
             setErrorMessages({
               serverError: error.response.data.errors.incorrectPassword,
@@ -198,17 +218,28 @@ function Login() {
         <p className={styles.login__elementPosition}> Or </p>
         <Button
           className={`${styles.login__elementPosition} ${classes.login__newAccountButton}`}
-          href="/whatsapp-clone/new-account"
+          href="/new-account"
           variant="contained"
           type="submit"
         >
           Create new account
         </Button>
-        <div className={styles.login__elementPosition}>
+
+        <Button
+          className={`${styles.login__elementPosition} ${classes.login__testIcon} ${classes.login__testButton}`}
+          onClick={(e) => handleOpenDrawer(e, !openDrawer)}
+        >
+          Test <HelpIcon />
+        </Button>
+        <Drawer
+          anchor={"bottom"}
+          open={openDrawer}
+          onClose={(e) => handleOpenDrawer(e, !openDrawer)}
+        >
           <p>TEST :</p>
-          <p>email: user1@email.com</p>
-          <p>pwd: test1</p>
-        </div>
+          <p>email: user1@email.com | user2@email.com</p>
+          <p>pwd: test | test2</p>
+        </Drawer>
       </form>
       <h1 className={styles.login__title}>What's app Clone</h1>
     </div>

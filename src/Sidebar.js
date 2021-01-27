@@ -18,7 +18,7 @@ function Sidebar() {
 
   useEffect(() => {
     if (!user) {
-      history.replace("/whatsapp-clone/login");
+      history.replace("/login");
     }
     setSectionName(sideSection);
   }, [sideSection]);

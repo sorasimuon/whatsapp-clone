@@ -20,7 +20,6 @@ function App() {
     { conversations, displaySideBar, user, currentConversation },
     dispatch,
   ] = useStateValue();
-  console.log(currentConversation);
 
   // Use Effect that subscribe to Pusher to get notified
   //when a new message have been sent from a user
@@ -31,8 +30,6 @@ function App() {
 
     const messageChannel = pusher.subscribe("messages");
     messageChannel.bind("updated", (data) => {
-      // console.log("youhou");
-      // console.log(data);
       dispatch({
         type: "ADD_NEW_MESSAGE",
         data: data,
@@ -53,37 +50,22 @@ function App() {
   return (
     <div className="app">
       <Switch>
-        <Route path="/whatsapp-clone/login">
+        <Route path="/login">
           <Login />
         </Route>
-        <Route path="/whatsapp-clone/new-account">
+        <Route path="/new-account">
           <Register />
         </Route>
-        <Route path="/whatsapp-clone/loading">
+        <Route path="/loading">
           <Loading />
         </Route>
         {user ? (
-          <Route path="/whatsapp-clone/conversations">
-            {/* <div className="app-body">
-              <Drawer anchor="left" open={displaySideBar}>
-                <Sidebar />
-              </Drawer>
-              <Chat />
-            </div> */}
+          <Route path="/conversations">
             <MainWindow />
           </Route>
         ) : (
-          <Redirect to="/whatsapp-clone/login" />
+          <Redirect to="/login" />
         )}
-        {/* <Route path="/whatsapp-clone/conversations">
-          <div className="app-body">
-            <Drawer anchor="left" open={displaySideBar}>
-              <Sidebar />
-            </Drawer>
-            <Chat />
-          </div>
-        </Route> */}
-
         <Route path="/">
           <Login />
         </Route>

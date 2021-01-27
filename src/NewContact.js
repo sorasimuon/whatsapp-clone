@@ -38,18 +38,6 @@ function NewContact({ contact }) {
     await axios
       .post("conversations/new-chat", { chatters: [user.email, contact.email] })
       .then((res) => {
-        // console.log(res);
-        // console.log(
-        //   "Created new chat between" +
-        //     res.data.chatters[0] +
-        //     " and" +
-        //     res.data.chatters[1] +
-        //     " : activated => " +
-        //     res.data.activated
-        // );
-        // console.log(res.data._id);
-        // console.log(typeof res.data._id);
-
         // if the conversation already exists, do not add to the list of conversations in store
         let exists = false;
         for (let conversation of conversations) {
@@ -58,7 +46,6 @@ function NewContact({ contact }) {
           }
         }
         if (!exists) {
-          // console.log("going");
           dispatch({
             type: "ADD_CONVERSATION",
             conversation: res.data,
@@ -82,10 +69,7 @@ function NewContact({ contact }) {
   return (
     <Fragment>
       <div className={styles.newContact} onClick={(e) => createNewChat()}>
-        <Avatar
-          className={classes.avatar}
-          //   src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSkcSGx-KlYubrDTQtCaFWZ3pBI3CJOxWwUHw&usqp=CAU"
-        >
+        <Avatar className={classes.avatar}>
           {contact.firstname[0].toUpperCase()}
         </Avatar>
         <p className={styles.newContact__name}>

@@ -28,7 +28,6 @@ function MainWindow() {
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleResizeWidth);
   });
-  console.log(isEmpty(currentConversation));
 
   if (isEmpty(currentConversation)) {
     return <Sidebar />;

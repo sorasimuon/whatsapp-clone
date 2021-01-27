@@ -128,7 +128,6 @@ function SidebarConversation({ conversation }) {
     if (conversation._id === currentConversation?._id) {
       setSelected(true);
     } else {
-      // console.log("conv " + conversation._id + ": unselected");
       setSelected(false);
     }
   }, [currentConversation]);
