@@ -40,4 +40,18 @@ Testing: testing-library/react
 
 ## Visuals
 
-SignIn page (desktop view):
+SignIn page:
+
+![plot](./SignIn.PNG)
+
+SignUp page:
+
+![plot](./SignUp.PNG)
+
+Conversation page:
+
+![plot](./Conversation.PNG)
+
+New conversation page:
+
+![plot](./NewConversation.PNG)
